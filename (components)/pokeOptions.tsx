@@ -7,7 +7,7 @@ type pokeOptionsProp = {
     onChangeIndex: (value: number) => void
 }
 
-export default function pokeOptions({filter, range, index, onChangeFilter, onChangeRange, onChangeIndex}: pokeOptionsProp){
+export default function PokeOptions({filter, range, index, onChangeFilter, onChangeRange, onChangeIndex}: pokeOptionsProp){
     return (
         <div>
             <input
