@@ -1,7 +1,7 @@
 'user client'
 import { useState } from "react"
 import type { PokemonProp } from "@/(types)/pokeType"
-import pokeOptions from "@/(components)/pokeOptions"
+import PokeOptions from "@/(components)/pokeOptions"
 import PokeList from "@/(components)/pokeList"
 
 export default function MainPage(){
@@ -9,10 +9,10 @@ export default function MainPage(){
 
   const [filter, setFilter] = useState('none')
   const [range, setRange] = useState(20)
-  const [pokeId, setPokeId] = useState()
+  const [pokeId, setPokeId] = useState(0)
 
-    async function updatePokeArray(){
-    if(pokeId){
+  async function updatePokeArray(){
+    if(pokeId == 0){
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeId}/`)
       const data = await response.json()
       return setPokeArray([data])
@@ -22,4 +22,23 @@ export default function MainPage(){
     const data = await response.json()
     return setPokeArray(data)
   }
+
+  updatePokeArray()
+
+  return (
+    <div>
+      <PokeOptions
+      filter={filter}
+      range={range}
+      index={pokeId}
+      onChangeFilter={setFilter}
+      onChangeRange={setRange}
+      onChangeIndex={setPokeId}
+      />
+      <PokeList
+      pokemon={pokeArray}
+      filter={filter}
+      />
+    </div>
+  )
 }
