@@ -11,33 +11,37 @@ export default function MainPage(){
   const [range, setRange] = useState<number>(20)
   const [pokeName, setPokeName] = useState<string>('')
 
-  async function updatePokeArray(){
+  async function getPokeDataArray(){
     const url = "https://pokeapi.co/api/v2/pokemon/"
 
-    const responseArr = await fetch(url + `?limit=${range}`)
-    const dataArr = await responseArr.json()
+    if(pokeName !== ""){
+      return await fetch(url + pokeName).then(res => res.json())
+    }
 
-    console.log(dataArr)
+    return await fetch(url + `?limit=${range}`).then(res => res.json())
+  }
+  
+  async function updatePokeArray(){
+    const data = await getPokeDataArray()
 
-    const response = await Promise.all(dataArr.results.map(async (data: any) =>{
-    const pokemonData = await fetch(data.url).then( res => res.json())
+    console.log(data)
 
-    return {
-        id: pokemonData.id,
-        name: pokemonData.name,
-        sprite: pokemonData.sprites.front_default,
-        sprite_shiny: pokemonData.sprites.front_shiny,
-        weight: pokemonData.weight,
-        types: pokemonData.types.map((t: any) => t.type.name),
-        stats: pokemonData.stats.map((s: any) => ({
+    const pokemonData = await Promise.all(data.results.map(async (poke: any) => {
+      const pokeData = await fetch(poke.url).then(res => res.json())
+      return {
+        id: pokeData.id,
+        name: pokeData.name,
+        sprite: pokeData.sprites.front_default,
+        sprite_shiny: pokeData.sprites.front_shiny,
+        weight: pokeData.weight,
+        types: pokeData.types.map((t: any) => t.type.name),
+        stats: pokeData.stats.map((s: any) => ({
           name: s.stat.name,
           value: s.base_stat
-        })
-        )
+        }))
       }
     }))
-
-    setPokeArray(response)
+    setPokeArray(pokemonData)
   }
 
   return (
