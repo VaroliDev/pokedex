@@ -15,7 +15,7 @@ export default function PokeList({pokemon, filter}: PokeListType){
     })
 
     return(
-        <div className='grid'>
+        <div className='grid grid-cols-4'>
             {filteredPoke.map((poke) => (
                 <PokeItem
                 key={poke.id}

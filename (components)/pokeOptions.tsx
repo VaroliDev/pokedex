@@ -1,23 +1,23 @@
 type pokeOptionsProp = {
     filter: string,
     range: number,
-    index: string | number,
+    search: string,
     onChangeFilter: (value: string) => void,
     onChangeRange: (value: number) => void,
-    onChangeIndex: (value: string | number) => void,
+    onChangeSearch: (value: string) => void,
     onClickSearch: () => void
 }
 
-export default function PokeOptions({filter, range, index, onChangeFilter, onChangeRange, onChangeIndex, onClickSearch}: pokeOptionsProp){
+export default function PokeOptions({filter, range, search, onChangeFilter, onChangeRange, onChangeSearch, onClickSearch}: pokeOptionsProp){
     return (
-        <div>
+        <div className="flex flex-row justify-center content-center">
             <button onClick={() => onClickSearch()}>Buscar</button>
 
             <input
             className=""
             placeholder="Insira o nome ou numero do pokemon..."
-            value={index}
-            onChange={e => onChangeIndex(e.target.value)}
+            value={search}
+            onChange={e => onChangeSearch(e.target.value)}
             />
 
             <select
@@ -25,9 +25,24 @@ export default function PokeOptions({filter, range, index, onChangeFilter, onCha
             value={filter}
             onChange={e => onChangeFilter(e.target.value)}>
                 <option value="none">Todos</option>
+                <option value="normal">Normal</option>
                 <option value="fire">Fogo</option>
                 <option value="water">Água</option>
+                <option value="electric">Elétrico</option>
                 <option value="grass">Grama</option>
+                <option value="ice">Gelo</option>
+                <option value="fighting">Lutador</option>
+                <option value="poison">Veneno</option>
+                <option value="ground">Terrestre</option>
+                <option value="flying">Voador</option>
+                <option value="psychic">Psíquico</option>
+                <option value="bug">Inseto</option>
+                <option value="rock">Pedra</option>
+                <option value="ghost">Fantasma</option>
+                <option value="dragon">Dragão</option>
+                <option value="dark">Sombrio</option>
+                <option value="steel">Aço</option>
+                <option value="fairy">Fada</option>
             </select>
             
             <select

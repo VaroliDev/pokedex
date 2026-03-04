@@ -6,17 +6,17 @@ type PokeItemProp = {
 
 export default function PokeItem({pokemon}: PokeItemProp){
     return (
-        <div>
-            <h3>Pokeindex: {pokemon.id}</h3>
+        <div className='m-10 flex justify-center content-center flex-col bg-gray-500 border rounded-md'>
+            <h3>Index: {pokemon.id}</h3>
             
-            <h4>{pokemon.name}</h4>
+            <h4>Nome: {pokemon.name}</h4>
 
             <img src={pokemon.sprite} alt={pokemon.name} />
 
-            <p>{pokemon.types}</p>
+            <p>Tipos: {pokemon.types.map(t => t.concat(" "))}</p>
 
             <span>
-                <p>{pokemon.weight}</p>
+                <p>Peso: {pokemon.weight} kg</p>
 
                 <p>{pokemon.stats.map((s: any) => `${s.name}: ${s.value}`).join(', ')}</p>
             </span>

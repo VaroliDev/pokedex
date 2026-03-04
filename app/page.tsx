@@ -9,7 +9,7 @@ export default function MainPage(){
 
   const [filter, setFilter] = useState<string>('none')
   const [range, setRange] = useState<number>(20)
-  const [poke, setPoke] = useState<string | number>('')
+  const [pokeName, setPokeName] = useState<string>('')
 
   async function updatePokeArray(){
     const url = "https://pokeapi.co/api/v2/pokemon/"
@@ -41,14 +41,14 @@ export default function MainPage(){
   }
 
   return (
-    <div>
+    <div className="flex flex-col justify-center content-center">
       <PokeOptions
       filter={filter}
       range={range}
-      index={poke}
+      search={pokeName}
       onChangeFilter={setFilter}
       onChangeRange={setRange}
-      onChangeIndex={setPoke}
+      onChangeSearch={setPokeName}
       onClickSearch={updatePokeArray}
       />
       <PokeList
