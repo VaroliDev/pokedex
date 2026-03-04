@@ -20,27 +20,37 @@ export default function MainPage(){
 
     return await fetch(url + `?limit=${range}`).then(res => res.json())
   }
+
+  function getPokeData(pokeData: any){
+    return {
+          id: pokeData.id,
+          name: pokeData.name,
+          sprite: pokeData.sprites.front_default,
+          sprite_shiny: pokeData.sprites.front_shiny,
+          weight: pokeData.weight,
+          types: pokeData.types.map((t: any) => t.type.name),
+          stats: pokeData.stats.map((s: any) => ({
+            name: s.stat.name,
+            value: s.base_stat
+          }))
+        }
+  }
   
   async function updatePokeArray(){
     const data = await getPokeDataArray()
 
     console.log(data)
 
-    const pokemonData = await Promise.all(data.results.map(async (poke: any) => {
-      const pokeData = await fetch(poke.url).then(res => res.json())
-      return {
-        id: pokeData.id,
-        name: pokeData.name,
-        sprite: pokeData.sprites.front_default,
-        sprite_shiny: pokeData.sprites.front_shiny,
-        weight: pokeData.weight,
-        types: pokeData.types.map((t: any) => t.type.name),
-        stats: pokeData.stats.map((s: any) => ({
-          name: s.stat.name,
-          value: s.base_stat
-        }))
-      }
-    }))
+    let pokemonData
+    
+    if(data.results){
+      pokemonData = await Promise.all(data.results.map(async (poke: any) => {
+        const pokeData = await fetch(poke.url).then(res => res.json())
+        return getPokeData(pokeData)
+      }))
+    } else {
+      pokemonData = new Array(getPokeData(data))
+    }
     setPokeArray(pokemonData)
   }
 
