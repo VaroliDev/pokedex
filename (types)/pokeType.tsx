@@ -4,6 +4,9 @@ export type PokemonProp = {
     sprite: string,
     sprite_shiny: string,
     weight: number,
-    types: string,
-    stats: string,
+    types: string[],
+    stats: {
+        name: string,
+        value: number
+    }[]
 }
