@@ -1,4 +1,4 @@
-'user client'
+'use client'
 import { useState } from "react"
 import type { PokemonProp } from "@/(types)/pokeType"
 import PokeOptions from "@/(components)/pokeOptions"
@@ -7,33 +7,49 @@ import PokeList from "@/(components)/pokeList"
 export default function MainPage(){
   const [pokeArray, setPokeArray] = useState<PokemonProp[]>([])
 
-  const [filter, setFilter] = useState('none')
-  const [range, setRange] = useState(20)
-  const [pokeId, setPokeId] = useState(0)
+  const [filter, setFilter] = useState<string>('none')
+  const [range, setRange] = useState<number>(20)
+  const [poke, setPoke] = useState<string | number>('')
 
   async function updatePokeArray(){
-    if(pokeId == 0){
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeId}/`)
-      const data = await response.json()
-      return setPokeArray([data])
-    }
+    const url = "https://pokeapi.co/api/v2/pokemon/"
 
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${range}`)
-    const data = await response.json()
-    return setPokeArray(data)
+    const responseArr = await fetch(url + `?limit=${range}`)
+    const dataArr = await responseArr.json()
+
+    console.log(dataArr)
+
+    const response = await Promise.all(dataArr.results.map(async (data: any) =>{
+    const pokemonData = await fetch(data.url).then( res => res.json())
+
+    return {
+        id: pokemonData.id,
+        name: pokemonData.name,
+        sprite: pokemonData.sprites.front_default,
+        sprite_shiny: pokemonData.sprites.front_shiny,
+        weight: pokemonData.weight,
+        types: pokemonData.types.map((t: any) => t.type.name),
+        stats: pokemonData.stats.map((s: any) => ({
+          name: s.stat.name,
+          value: s.base_stat
+        })
+        )
+      }
+    }))
+
+    setPokeArray(response)
   }
-
-  updatePokeArray()
 
   return (
     <div>
       <PokeOptions
       filter={filter}
       range={range}
-      index={pokeId}
+      index={poke}
       onChangeFilter={setFilter}
       onChangeRange={setRange}
-      onChangeIndex={setPokeId}
+      onChangeIndex={setPoke}
+      onClickSearch={updatePokeArray}
       />
       <PokeList
       pokemon={pokeArray}

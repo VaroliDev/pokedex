@@ -11,7 +11,7 @@ export default function PokeList({pokemon, filter}: PokeListType){
     const filteredPoke = pokemon.filter(poke => {
         return filter === "none"
         ?  true
-        :  poke.types == filter //poke.types.type.includes(filter) Possivel solução para o filtro, depois de arrumar o pokeType
+        :  poke.types.includes(filter)
     })
 
     return(

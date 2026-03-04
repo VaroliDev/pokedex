@@ -18,7 +18,7 @@ export default function PokeItem({pokemon}: PokeItemProp){
             <span>
                 <p>{pokemon.weight}</p>
 
-                <p>{pokemon.types}</p>
+                <p>{pokemon.stats.map((s: any) => `${s.name}: ${s.value}`).join(', ')}</p>
             </span>
         </div>
     )
