@@ -10,7 +10,7 @@ type pokeOptionsProp = {
 
 export default function PokeOptions({filter, range, search, onChangeFilter, onChangeRange, onChangeSearch, onClickSearch}: pokeOptionsProp){
     return (
-        <div className="flex flex-row justify-center content-center">
+        <div className="min-w-lg m-sm flex flex-row justify-around content-center">
             <button onClick={() => onClickSearch()}>Buscar</button>
 
             <input
@@ -19,6 +19,19 @@ export default function PokeOptions({filter, range, search, onChangeFilter, onCh
             value={search}
             onChange={e => onChangeSearch(e.target.value)}
             />
+
+            <input
+            className=""
+            />
+
+            <select
+            className=""
+            value={range}
+            onChange={e => onChangeRange(Number(e.target.value))}>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+            </select>
 
             <select
             className=""
@@ -43,15 +56,6 @@ export default function PokeOptions({filter, range, search, onChangeFilter, onCh
                 <option value="dark">Sombrio</option>
                 <option value="steel">Aço</option>
                 <option value="fairy">Fada</option>
-            </select>
-            
-            <select
-            className=""
-            value={range}
-            onChange={e => onChangeRange(Number(e.target.value))}>
-                <option value={20}>20</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
             </select>
         </div>
     )

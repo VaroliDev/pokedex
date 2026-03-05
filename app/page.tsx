@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { PokemonProp } from "@/(types)/pokeType"
 import PokeOptions from "@/(components)/pokeOptions"
 import PokeList from "@/(components)/pokeList"
@@ -8,8 +8,13 @@ export default function MainPage(){
   const [pokeArray, setPokeArray] = useState<PokemonProp[]>([])
 
   const [filter, setFilter] = useState<string>('none')
+  const [page, setPage] = useState<number>(0)
   const [range, setRange] = useState<number>(20)
   const [pokeName, setPokeName] = useState<string>('')
+
+  useEffect(() => {
+    updatePokeArray()
+  }, [])
 
   async function getPokeDataArray(){
     const url = "https://pokeapi.co/api/v2/pokemon/"
@@ -18,7 +23,7 @@ export default function MainPage(){
       return await fetch(url + pokeName).then(res => res.json())
     }
 
-    return await fetch(url + `?limit=${range}`).then(res => res.json())
+    return await fetch(url + `?offset=0&?limit=${range}`).then(res => res.json())
   }
 
   function getPokeData(pokeData: any){
@@ -38,8 +43,6 @@ export default function MainPage(){
   
   async function updatePokeArray(){
     const data = await getPokeDataArray()
-
-    console.log(data)
 
     let pokemonData
     
