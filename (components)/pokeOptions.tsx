@@ -2,13 +2,22 @@ type pokeOptionsProp = {
     filter: string,
     range: number,
     search: string,
+    page: number,
+    maxPage: number,
     onChangeFilter: (value: string) => void,
     onChangeRange: (value: number) => void,
     onChangeSearch: (value: string) => void,
+    onChangePage: (value: number) => void,
     onClickSearch: () => void
 }
 
-export default function PokeOptions({filter, range, search, onChangeFilter, onChangeRange, onChangeSearch, onClickSearch}: pokeOptionsProp){
+export default function PokeOptions({filter, range, search, page, maxPage, onChangeFilter, onChangeRange, onChangeSearch, onChangePage, onClickSearch}: pokeOptionsProp){
+    const pages = []
+
+    for(let i = 1; i <= maxPage; i++){
+        pages.push(<option key={i} value={i-1}>{i}</option>)
+    }
+    
     return (
         <div className="min-w-lg m-sm flex flex-row justify-around content-center">
             <button onClick={() => onClickSearch()}>Buscar</button>
@@ -20,9 +29,12 @@ export default function PokeOptions({filter, range, search, onChangeFilter, onCh
             onChange={e => onChangeSearch(e.target.value)}
             />
 
-            <input
+            <select
             className=""
-            />
+            value={page}
+            onChange={e => onChangePage(Number(e.target.value))}>
+                {pages}
+            </select>
 
             <select
             className=""

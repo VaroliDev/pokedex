@@ -9,6 +9,7 @@ export default function MainPage(){
 
   const [filter, setFilter] = useState<string>('none')
   const [page, setPage] = useState<number>(0)
+  const [maxPage, setMaxPage] = useState<number>(0)
   const [range, setRange] = useState<number>(20)
   const [pokeName, setPokeName] = useState<string>('')
 
@@ -23,7 +24,7 @@ export default function MainPage(){
       return await fetch(url + pokeName).then(res => res.json())
     }
 
-    return await fetch(url + `?offset=0&?limit=${range}`).then(res => res.json())
+    return await fetch(url + `?offset=${page * range}&?limit=${range}`).then(res => res.json())
   }
 
   function getPokeData(pokeData: any){
@@ -47,6 +48,7 @@ export default function MainPage(){
     let pokemonData
     
     if(data.results){
+      setMaxPage(data.results.count / range)
       pokemonData = await Promise.all(data.results.map(async (poke: any) => {
         const pokeData = await fetch(poke.url).then(res => res.json())
         return getPokeData(pokeData)
@@ -63,9 +65,12 @@ export default function MainPage(){
       filter={filter}
       range={range}
       search={pokeName}
+      page={page}
+      maxPage={maxPage}
       onChangeFilter={setFilter}
       onChangeRange={setRange}
       onChangeSearch={setPokeName}
+      onChangePage={setPage}
       onClickSearch={updatePokeArray}
       />
       <PokeList
