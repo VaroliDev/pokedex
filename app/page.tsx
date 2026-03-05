@@ -49,7 +49,7 @@ export default function MainPage(){
         return getPokeData(pokeData)
       }))
     } else {
-      pokemonData = new Array(getPokeData(data))
+      pokemonData = [getPokeData(data)]
     }
     setPokeArray(pokemonData)
   }
